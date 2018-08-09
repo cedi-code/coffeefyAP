@@ -60,6 +60,7 @@ Route::group([
                 Route::get('/pupil/{id}', 'ClassmemberController@showPupil');
                 Route::get('/raw', 'ClassmemberController@getRaw');
 
+                // TODO noch nicht fertig
                 Route::post('/', 'ClassmemberController@create' );
                 Route::patch('/class/{id}', 'ClassmemberController@updateClass');
                 Route::delete('/pupil/{id}', 'ClassmemberController@destroyPupil');
@@ -118,7 +119,75 @@ Route::group([
 
 
 
+
         });
+
+        Route::prefix('event_types')->group(function () {
+
+
+
+            Route::get('/', 'EventTypeController@index');
+            Route::get('/{event_type}', 'EventTypeController@show');
+
+
+            Route::group([
+                'middleware' => 'isAdmin'
+            ], function (){
+                Route::post('/', 'EventTypeController@create' );
+                Route::patch('/{id}', 'EventTypeController@update');
+                Route::delete('/{id}', 'EventTypeController@destroy');
+            });
+
+        });
+
+        Route::prefix('events')->group(function () {
+
+            Route::get('/raw', 'EventController@getRaw')->middleware('isAdmin');
+
+            Route::get('/', 'EventController@index');
+            Route::post('/', 'EventController@create' );
+
+            Route::get('/{event}', 'EventController@show')->middleware('isEventMember');
+
+
+
+
+            Route::group([
+                'middleware' => 'isCreator'
+            ], function (){
+                Route::patch('/{id}', 'EventController@update');
+                Route::delete('/{id}', 'EventController@destroy');
+            });
+        });
+
+        Route::prefix('eventmembers')->group(function () {
+
+
+
+                Route::group([
+                    'middleware' => 'isAdmin'
+                ], function (){
+                    Route::get('/raw', 'EventmemberController@getRaw');
+                    Route::get('/user/{id}', 'EventmemberController@showUser');
+                });
+
+                Route::get('/{event}', 'EventmemberController@show')->middleware('isEventMember');
+                Route::get('/', 'EventmemberController@index');
+
+                Route::post('/', 'EventmemberController@create' );
+
+                // creator  admin nicht zu empfehlen!
+
+                // creator sich selber admin id muss die des Events sein!
+                // TODO im body das event haben!
+                Route::delete('/user/{id}', 'EventmemberController@destroyUser')->middleware('kickMember');
+
+                // delte gruppe?
+                Route::delete('/event/{id}', 'EventmemberController@destroyEventMembers')->middleware('isCreator');
+
+        });
+
+
 
 
 

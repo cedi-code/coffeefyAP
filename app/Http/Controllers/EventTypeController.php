@@ -2,18 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use App\Courses;
+use App\Event_types;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
-class CoursController extends Controller
+class EventTypeController extends Controller
 {
 
-    public $tableName = 'courses';
+    public $tableName = 'event_types';
+
 
     public $rules = array(
-        'title' => 'required|string',
-        'short' => 'required|string'
+        'type' => 'required|string'
     );
     /**
      * Display a listing of the resource.
@@ -22,7 +22,7 @@ class CoursController extends Controller
      */
     public function index()
     {
-        return Courses::all();
+        return Event_types::all();
     }
 
     /**
@@ -40,14 +40,13 @@ class CoursController extends Controller
             ], 400);
         }
 
-        $course = new Courses([
-            'title' => $request->title,
-            'short' => $request->short,
+        $eventType = new Event_types([
+            'type' => $request->type
         ]);
-        $course->save();
+        $eventType->save();
         return response()->json([
-            'message' => 'Successfully created course!',
-            'id' => $course->id
+            'message' => 'Successfully created event type!',
+            'id' => $eventType->id
         ], 201);
     }
 
@@ -68,9 +67,9 @@ class CoursController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Courses $cours)
+    public function show(Event_types $event_type)
     {
-        return $cours;
+        return $event_type;
     }
 
     /**
@@ -81,7 +80,7 @@ class CoursController extends Controller
      */
     public function edit($id)
     {
-        //
+
     }
 
     /**
@@ -101,10 +100,8 @@ class CoursController extends Controller
             ], 200);
         }
 
-        $course = Courses::where("id", $id)->update([
-            'title' => $request->title,
-            'short' => $request->short,
-
+        $eventType = Event_types::where("id", $id)->update([
+            'type' => $request->type
         ]);
         return response()->json(["id" => $id], 200);
     }
@@ -117,10 +114,10 @@ class CoursController extends Controller
      */
     public function destroy($id)
     {
-        $course = Courses::find($id);
-        $course->delete();
+        $eventType = Event_types::find($id);
+        $eventType->delete();
         return response()->json([
-            'message' => 'Successfully deleted course!'
+            'message' => 'Successfully deleted event type!'
         ], 200);
     }
 }

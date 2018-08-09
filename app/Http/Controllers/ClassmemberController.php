@@ -68,7 +68,8 @@ class ClassmemberController extends Controller
         ]);
         $classmember->save();
         return response()->json([
-            'message' => 'Successfully created classmember!'
+            'message' => 'Successfully created classmember!',
+            'id' => $classmember->class
         ], 201);
     }
 
@@ -137,7 +138,7 @@ class ClassmemberController extends Controller
                    'pupil' => $request->pupil,
                ]);
            }
-        return response()->json(["classmember" => $classmember], 200);
+        return response()->json(["id" => $id], 200);
     }
 
     public function updatePupil(Request $request, $id) {
@@ -159,7 +160,7 @@ class ClassmemberController extends Controller
 
 
 
-        return response()->json(["classmember" => $classmember], 200);
+        return response()->json(["id" => $id], 200);
     }
 
     /**

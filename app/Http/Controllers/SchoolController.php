@@ -48,7 +48,8 @@ class SchoolController extends Controller
         ]);
         $school->save();
         return response()->json([
-            'message' => 'Successfully created school!'
+            'message' => 'Successfully created school!',
+            'id' => $school->id
         ], 201);
     }
 
@@ -107,7 +108,7 @@ class SchoolController extends Controller
             'title' => $request->title
 
         ]);
-        return response()->json(["school" => $school], 200);
+        return response()->json(["id" => $id], 200);
     }
 
     /**

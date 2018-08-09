@@ -2,27 +2,51 @@
 
 namespace App\Http\Controllers;
 
-use App\Courses;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use App\Events;
+use App\Eventmembers;
 
-class CoursController extends Controller
+class EventController extends Controller
 {
 
-    public $tableName = 'courses';
+    public $tableName = 'events';
+
 
     public $rules = array(
+        'type' => 'int',
+        'lesson' => 'required|int',
         'title' => 'required|string',
-        'short' => 'required|string'
+        'description' => 'string'
     );
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        return Courses::all();
+
+        $data2 = [];
+        $eventOwner = Events::select('id','type', 'lesson', 'title')->where("creator", $request->user()->id)->get();
+        foreach ($eventOwner as $eventO) {
+            $data2[] = [
+                'event' => $eventO,
+            ];
+        }
+
+        $eventsIsMember =  Eventmembers::select('event')->where("user", $request->user()->id)->get();
+        foreach ($eventsIsMember as $event) {
+            $data2[] = [
+                'event' => Events::select('id','type', 'lesson', 'title')->where("id", $event->event)->get()[0]
+            ];
+
+        }
+        return $data2;
+
+    }
+    public function getRaw() {
+        return Events::all();
     }
 
     /**
@@ -40,14 +64,17 @@ class CoursController extends Controller
             ], 400);
         }
 
-        $course = new Courses([
+        $event = new Events([
+            'type' => $request->type,
+            'lesson' => $request->lesson,
+            'creator' => $request->user()->id,
             'title' => $request->title,
-            'short' => $request->short,
+            'description' => $request->description
         ]);
-        $course->save();
+        $event->save();
         return response()->json([
-            'message' => 'Successfully created course!',
-            'id' => $course->id
+            'message' => 'Successfully created event!',
+            'id' => $event->id
         ], 201);
     }
 
@@ -68,9 +95,10 @@ class CoursController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Courses $cours)
+    public function show(Events $event)
     {
-        return $cours;
+        return $event;
+
     }
 
     /**
@@ -101,12 +129,13 @@ class CoursController extends Controller
             ], 200);
         }
 
-        $course = Courses::where("id", $id)->update([
+        $event = Events::where("id", $id)->update([
+            'type' => $request->type,
+            'lesson' => $request->lesson,
             'title' => $request->title,
-            'short' => $request->short,
-
+            'description' => $request->description
         ]);
-        return response()->json(["id" => $id], 200);
+        return response()->json(["id" => $id, "event" => $event], 200);
     }
 
     /**
@@ -117,10 +146,10 @@ class CoursController extends Controller
      */
     public function destroy($id)
     {
-        $course = Courses::find($id);
-        $course->delete();
+        $event= Events::find($id);
+        $event->delete();
         return response()->json([
-            'message' => 'Successfully deleted course!'
+            'message' => 'Successfully deleted event!'
         ], 200);
     }
 }

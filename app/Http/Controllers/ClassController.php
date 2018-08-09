@@ -57,7 +57,8 @@ class ClassController extends Controller
         ]);
         $class->save();
         return response()->json([
-            'message' => 'Successfully created class!'
+            'message' => 'Successfully created class!',
+            'id' => $class->id
         ], 201);
 
 
@@ -121,7 +122,7 @@ class ClassController extends Controller
             'updated_at' => DB::raw('NOW()')
 
         ]);
-        return response()->json(["class" => $class], 200);
+        return response()->json(["id" => $id], 200);
     }
 
     /**

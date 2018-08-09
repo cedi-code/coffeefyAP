@@ -79,7 +79,8 @@ class LessonController extends Controller
         ]);
         $lesson->save();
         return response()->json([
-            'message' => 'Successfully created lesson!'
+            'message' => 'Successfully created lesson!',
+            'id' => $lesson->id
         ], 201);
     }
 
@@ -145,7 +146,7 @@ class LessonController extends Controller
             'week' => $request->week
 
         ]);
-        return response()->json(["lesson" => $lesson], 200);
+        return response()->json(["id" => $id], 200);
     }
 
     /**
