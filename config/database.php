@@ -41,10 +41,10 @@ return [
 
         'mysql' => [
             'driver' => 'mysql',
-            'host' => env('DB_HOST', 'coffeefy.ch'),
+            'host' => env('DB_HOST', 'learnable.ch'),
             'port' => env('DB_PORT', '3306'),
-            'database' => env('DB_DATABASE', 'coffeefy'),
-            'username' => env('DB_USERNAME', 'serveradmin'),
+            'database' => env('DB_DATABASE', 'learnable'),
+            'username' => env('DB_USERNAME', 'dbadmin'),
             'password' => env('DB_PASSWORD', 'gibbiX12345!'),
             'unix_socket' => env('DB_SOCKET', ''),
             'charset' => 'utf8mb4',

@@ -167,11 +167,11 @@ Route::group([
                 Route::group([
                     'middleware' => 'isAdmin'
                 ], function (){
-                    Route::get('/raw', 'EventmemberController@getRaw');
-                    Route::get('/user/{id}', 'EventmemberController@showUser');
+                    Route::get('/raw', 'EventMemberController@getRaw');
+                    Route::get('/user/{id}', 'EventMemberController@showUser');
                 });
 
-                Route::get('/{event}', 'EventmemberController@show')->middleware('isEventMember');
+                Route::get('/{event}', 'EventMemberController@show')->middleware('isEventMember');
                 Route::get('/', 'EventmemberController@index');
 
                 Route::post('/', 'EventmemberController@create' );
@@ -180,10 +180,10 @@ Route::group([
 
                 // creator sich selber admin id muss die des Events sein!
                 // TODO im body das event haben!
-                Route::delete('/user/{id}', 'EventmemberController@destroyUser')->middleware('kickMember');
+                Route::delete('/user/{id}', 'EventMemberController@destroyUser')->middleware('kickMember');
 
                 // delte gruppe?
-                Route::delete('/event/{id}', 'EventmemberController@destroyEventMembers')->middleware('isCreator');
+                Route::delete('/event/{id}', 'EventMemberController@destroyEventMembers')->middleware('isCreator');
 
         });
 
