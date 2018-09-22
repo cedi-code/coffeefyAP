@@ -36,7 +36,7 @@ class ClassmemberController extends Controller
                     'teacher' => $class->classTo->teacher,
                     'title' => $class->classTo->title
                 ],
-                'members' => Classmembers::select('pupil')->where("class", $class->class)->with('user')->get()
+                'members' => Classmembers::select('pupil')->where("class", $class->class)->get()
             ];
 
         }

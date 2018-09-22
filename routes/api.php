@@ -22,13 +22,19 @@ Route::group([
     Route::post('signup', 'AuthController@signup');
 
 
-
     Route::group([
         'middleware' => 'auth:api'
     ], function() {
         Route::get('logout', 'AuthController@logout');
         Route::get('user', 'AuthController@user');
 
+
+        Route::get('users/{user}' ,'UserController@show');
+        // teacher routes
+        Route::prefix('teachers')->group(function () {
+            Route::get('/', 'TeacherController@index');
+            Route::get('/{user}', 'TeacherController@show');
+        });
 
         // classes Routes
         Route::prefix('classes')->group(function () {
@@ -51,13 +57,13 @@ Route::group([
 
             Route::get('/', 'ClassmemberController@index');
 
+            Route::get('/class/{id}', 'ClassmemberController@showClass');
+            Route::get('/pupil/{id}', 'ClassmemberController@showPupil');
 
             Route::group([
                 'middleware' => 'isAdmin'
             ], function (){
-
-                Route::get('/class/{id}', 'ClassmemberController@showClass');
-                Route::get('/pupil/{id}', 'ClassmemberController@showPupil');
+                
                 Route::get('/raw', 'ClassmemberController@getRaw');
 
                 // TODO noch nicht fertig
