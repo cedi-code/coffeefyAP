@@ -63,7 +63,7 @@ Route::group([
             Route::group([
                 'middleware' => 'isAdmin'
             ], function (){
-                
+
                 Route::get('/raw', 'ClassmemberController@getRaw');
 
                 // TODO noch nicht fertig
